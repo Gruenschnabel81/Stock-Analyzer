@@ -1,0 +1,39 @@
+# -------------------------------------------------------
+# Ticker-Liste  —  eine Zeile pro Symbol
+# US-Aktien:    AAPL, MSFT, NVDA …
+# DE-Aktien:    VOW.DE, SAP.DE …
+# ETFs:         IWDA.AS, SPY …
+# Kommentare mit # werden ignoriert.
+# -------------------------------------------------------
+
+# US Tech
+GOOGL
+TSLA
+AAPL
+META
+MSFT
+NFLX
+NVDA
+CRM
+SQ
+PYPL
+
+# US Sonstige
+ABT
+ISRG
+MCD
+DIS
+MDT
+KO
+BRK-B
+
+# Quantum / AI
+QBTS
+
+# Europa
+VOW.DE
+
+# ETFs / Indizes
+IWDA.AS
+XLF
+XAIX.DE

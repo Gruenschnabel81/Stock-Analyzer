@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="theme-color" content="#185FA5">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="Analyse">
+<title>Aktien Analyse</title>
+<link rel="manifest" href="manifest.json">
+<style>
+  :root {
+    --bg:      #f5f5f3;
+    --card:    #ffffff;
+    --border:  rgba(0,0,0,0.08);
+    --text:    #1a1a18;
+    --muted:   #6b6b67;
+    --score0:  #E24B4A; --score0bg: #FCEBEB;
+    --score1:  #cc5500; --score1bg: #FFF0E6;
+    --score2:  #BA7517; --score2bg: #FAEEDA;
+    --score3:  #3B6D11; --score3bg: #EAF3DE;
+    --score4:  #085041; --score4bg: #E1F5EE;
+    --blue:    #185FA5; --bluebg:  #E6F1FB;
+    --radius:  12px;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:    #1a1a18; --card:   #242422;
+      --border:rgba(255,255,255,0.09); --text:  #e8e6e0; --muted: #8a8a84;
+      --score0bg:#3a1010; --score1bg:#3a2010;
+      --score2bg:#3a2a00; --score3bg:#1a2e0a; --score4bg:#0a2620;
+      --bluebg: #0c2440;
+    }
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+         background: var(--bg); color: var(--text); min-height: 100vh; }
+
+  header { background: var(--card); border-bottom: 1px solid var(--border);
+           padding: 14px 16px; position: sticky; top: 0; z-index: 10;
+           display: flex; align-items: center; justify-content: space-between; }
+  header h1 { font-size: 17px; font-weight: 600; }
+  #updated  { font-size: 12px; color: var(--muted); }
+
+  #controls { padding: 12px 16px; display: flex; gap: 8px; flex-wrap: wrap;
+              align-items: center; }
+  #filter-bar { display: flex; gap: 6px; flex-wrap: wrap; flex: 1; }
+  .filter-btn { font-size: 12px; padding: 4px 10px; border-radius: 20px;
+                border: 1px solid var(--border); background: var(--card);
+                color: var(--muted); cursor: pointer; transition: all .15s; }
+  .filter-btn.active { background: var(--blue); color: #fff; border-color: var(--blue); }
+
+  #sort-select { font-size: 12px; padding: 4px 8px; border-radius: 8px;
+                 border: 1px solid var(--border); background: var(--card);
+                 color: var(--text); cursor: pointer; }
+
+  #grid { display: grid; gap: 10px; padding: 0 16px 24px;
+          grid-template-columns: 1fr; }
+  @media (min-width: 540px) { #grid { grid-template-columns: repeat(2, 1fr); } }
+  @media (min-width: 900px) { #grid { grid-template-columns: repeat(3, 1fr); } }
+
+  .card { background: var(--card); border-radius: var(--radius);
+          border: 1px solid var(--border); padding: 14px;
+          cursor: pointer; transition: transform .1s;
+          display: flex; flex-direction: column; gap: 10px; }
+  .card:active { transform: scale(0.98); }
+
+  .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
+  .ticker   { font-size: 16px; font-weight: 700; letter-spacing: .5px; }
+  .price-row { font-size: 13px; color: var(--muted); margin-top: 2px; }
+  .chg.pos  { color: #3B6D11; } .chg.neg { color: #A32D2D; }
+
+  .score-badge { font-size: 22px; font-weight: 800; width: 48px; height: 48px;
+                 border-radius: 10px; display: flex; align-items: center;
+                 justify-content: center; flex-shrink: 0; }
+  .s0 { color: var(--score0); background: var(--score0bg); }
+  .s1 { color: var(--score1); background: var(--score1bg); }
+  .s2 { color: var(--score2); background: var(--score2bg); }
+  .s3 { color: var(--score3); background: var(--score3bg); }
+  .s4 { color: var(--score4); background: var(--score4bg); }
+
+  .signals { display: flex; gap: 4px; flex-wrap: wrap; }
+  .sig { font-size: 10px; padding: 2px 7px; border-radius: 20px;
+         border: 1px solid var(--border); color: var(--muted);
+         background: var(--bg); }
+  .sig.on { background: var(--score3bg); color: var(--score3);
+            border-color: transparent; }
+
+  .sparkline { height: 32px; width: 100%; }
+
+  .stats-row { display: flex; gap: 12px; }
+  .stat { flex: 1; }
+  .stat label { font-size: 10px; color: var(--muted); display: block; }
+  .stat span  { font-size: 13px; font-weight: 500; }
+
+  /* Detail modal */
+  #modal-bg { display: none; min-height: 100vh; background: rgba(0,0,0,0.4);
+              padding: 40px 16px 16px; }
+  #modal-bg.open { display: flex; align-items: flex-end; }
+  #modal { background: var(--card); border-radius: 20px 20px 0 0;
+           width: 100%; max-width: 520px; margin: 0 auto;
+           padding: 20px; max-height: 80vh; overflow-y: auto; }
+  #modal h2 { font-size: 20px; margin-bottom: 4px; }
+  #modal-close { float: right; font-size: 22px; cursor: pointer;
+                 color: var(--muted); line-height: 1; }
+  .detail-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px;
+                 margin-top: 16px; }
+  .detail-cell { background: var(--bg); border-radius: 8px; padding: 10px 12px; }
+  .detail-cell label { font-size: 11px; color: var(--muted); display: block; margin-bottom: 2px; }
+  .detail-cell span  { font-size: 15px; font-weight: 600; }
+  .sig-detail { display: flex; align-items: center; gap: 8px;
+                padding: 8px 0; border-bottom: 1px solid var(--border); }
+  .sig-detail:last-child { border: none; }
+  .sig-dot { width: 10px; height: 10px; border-radius: 50%; flex-shrink: 0; }
+  .sig-dot.on  { background: #639922; }
+  .sig-dot.off { background: #D3D1C7; }
+  .sig-name { font-size: 13px; flex: 1; }
+  .sig-val  { font-size: 12px; color: var(--muted); }
+
+  #refresh-btn { font-size: 13px; padding: 6px 14px; border-radius: 8px;
+                 border: 1px solid var(--border); background: var(--card);
+                 color: var(--text); cursor: pointer; margin-left: auto; }
+  #loading { text-align: center; padding: 60px 16px; color: var(--muted); }
+  #error   { text-align: center; padding: 40px 16px; color: var(--score0); }
+</style>
+</head>
+<body>
+
+<header>
+  <div>
+    <h1>Aktien Analyse</h1>
+    <div id="updated">Lädt…</div>
+  </div>
+  <button id="refresh-btn" onclick="loadData()">Neu laden</button>
+</header>
+
+<div id="controls">
+  <div id="filter-bar">
+    <button class="filter-btn active" data-min="0" data-max="4">Alle</button>
+    <button class="filter-btn" data-min="3" data-max="4">Kaufsignal 3–4</button>
+    <button class="filter-btn" data-min="0" data-max="1">Schwach 0–1</button>
+  </div>
+  <select id="sort-select" onchange="render()">
+    <option value="score">Score ↓</option>
+    <option value="rsi">RSI ↓</option>
+    <option value="change">Änderung ↓</option>
+    <option value="ticker">Ticker A–Z</option>
+  </select>
+</div>
+
+<div id="loading">Daten werden geladen…</div>
+<div id="error" style="display:none"></div>
+<div id="grid"></div>
+
+<!-- Detail Modal -->
+<div id="modal-bg" onclick="closeModal(event)">
+  <div id="modal">
+    <span id="modal-close" onclick="closeModal()">×</span>
+    <h2 id="m-ticker"></h2>
+    <div id="m-price" style="color:var(--muted);font-size:14px;margin-bottom:12px;"></div>
+    <div class="detail-grid" id="m-stats"></div>
+    <div style="margin-top:20px;font-size:13px;font-weight:600;margin-bottom:8px;">Signale</div>
+    <div id="m-signals"></div>
+    <div style="margin-top:20px;font-size:13px;font-weight:600;margin-bottom:8px;">Score-Verlauf (60 Tage)</div>
+    <canvas id="m-chart" height="80" style="width:100%"></canvas>
+  </div>
+</div>
+
+<script>
+let allData = [];
+let filterMin = 0, filterMax = 4;
+
+const SIG_LABELS = {
+  rsi_oversold:        { on: "RSI < 40 (oversold)",     off: "RSI ≥ 40" },
+  macd_crossover:      { on: "MACD × Signal (Kauf)",    off: "Kein Kreuzungssignal" },
+  histogram_improving: { on: "Histogramm steigt",       off: "Histogramm fällt" },
+  below_sma90:         { on: "Kurs < SMA90",            off: "Kurs ≥ SMA90" },
+};
+
+async function loadData() {
+  document.getElementById("loading").style.display = "block";
+  document.getElementById("error").style.display   = "none";
+  document.getElementById("grid").innerHTML        = "";
+  try {
+    const r = await fetch("data.json?t=" + Date.now());
+    if (!r.ok) throw new Error("HTTP " + r.status);
+    const json = await r.json();
+    allData = json.stocks;
+    const d = new Date(json.updated);
+    document.getElementById("updated").textContent =
+      "Aktualisiert: " + d.toLocaleString("de-AT", {
+        day:"2-digit", month:"2-digit", year:"numeric",
+        hour:"2-digit", minute:"2-digit"
+      });
+    render();
+  } catch(e) {
+    document.getElementById("error").textContent = "Fehler: " + e.message;
+    document.getElementById("error").style.display = "block";
+  } finally {
+    document.getElementById("loading").style.display = "none";
+  }
+}
+
+function render() {
+  const sortVal = document.getElementById("sort-select").value;
+  let data = allData.filter(s => s.score >= filterMin && s.score <= filterMax);
+
+  data.sort((a, b) => {
+    if (sortVal === "score")  return b.score - a.score;
+    if (sortVal === "rsi")    return a.rsi - b.rsi;
+    if (sortVal === "change") return b.change_pct - a.change_pct;
+    if (sortVal === "ticker") return a.ticker.localeCompare(b.ticker);
+    return 0;
+  });
+
+  const grid = document.getElementById("grid");
+  grid.innerHTML = data.map(s => cardHTML(s)).join("");
+
+  grid.querySelectorAll(".card").forEach((el, i) => {
+    const stock = data[i];
+    drawSparkline(el.querySelector(".sparkline"), stock.history);
+    el.addEventListener("click", () => openModal(stock));
+  });
+}
+
+function scoreColor(s) {
+  return ["s0","s1","s2","s3","s4"][Math.min(s, 4)];
+}
+
+function cardHTML(s) {
+  const chgClass = s.change_pct >= 0 ? "pos" : "neg";
+  const chgSign  = s.change_pct >= 0 ? "+" : "";
+  const sigs = Object.entries(s.signals).map(([k,v]) =>
+    `<span class="sig ${v ? 'on' : ''}">${shortSig(k)}</span>`
+  ).join("");
+
+  return `
+  <div class="card">
+    <div class="card-top">
+      <div>
+        <div class="ticker">${s.ticker}</div>
+        <div class="price-row">
+          ${s.price.toLocaleString("de-DE", {minimumFractionDigits:2,maximumFractionDigits:2})}
+          <span class="chg ${chgClass}">${chgSign}${s.change_pct.toFixed(2)}%</span>
+        </div>
+      </div>
+      <div class="score-badge ${scoreColor(s.score)}">${s.score}</div>
+    </div>
+    <div class="signals">${sigs}</div>
+    <svg class="sparkline"></svg>
+    <div class="stats-row">
+      <div class="stat"><label>RSI (3p)</label><span>${s.rsi_avg3}</span></div>
+      <div class="stat"><label>MACD</label><span>${s.macd.toFixed(3)}</span></div>
+      <div class="stat"><label>SMA90</label><span>${s.sma90 ? s.sma90.toLocaleString("de-DE",{maximumFractionDigits:0}) : "—"}</span></div>
+    </div>
+  </div>`;
+}
+
+function shortSig(k) {
+  return { rsi_oversold:"RSI<40", macd_crossover:"MACD×", histogram_improving:"Hist↑", below_sma90:"<SMA90" }[k] || k;
+}
+
+function drawSparkline(svg, history) {
+  if (!history || history.length < 2) return;
+  const w = svg.clientWidth || 200, h = 32;
+  const n = history.length;
+  const step = w / (n - 1);
+  const colors = ["#E24B4A","#cc5500","#BA7517","#3B6D11","#085041"];
+  const pts = history.map((v,i) => `${(i * step).toFixed(1)},${(h - (v / 4) * (h - 4) - 2).toFixed(1)}`).join(" ");
+
+  svg.setAttribute("viewBox", `0 0 ${w} ${h}`);
+  svg.innerHTML = `<polyline points="${pts}" fill="none" stroke="${colors[history[n-1]]}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"/>`;
+}
+
+// ---------------------------------------------------------------------------
+// Modal
+// ---------------------------------------------------------------------------
+
+let modalChart = null;
+
+function openModal(s) {
+  document.getElementById("m-ticker").textContent = s.ticker;
+  const chgClass = s.change_pct >= 0 ? "color:#3B6D11" : "color:#A32D2D";
+  const chgSign  = s.change_pct >= 0 ? "+" : "";
+  document.getElementById("m-price").innerHTML =
+    `${s.price.toLocaleString("de-DE",{minimumFractionDigits:2,maximumFractionDigits:2})} &nbsp;<span style="${chgClass}">${chgSign}${s.change_pct.toFixed(2)}%</span>`;
+
+  document.getElementById("m-stats").innerHTML = [
+    ["Score", `<span class="score-badge ${scoreColor(s.score)}" style="font-size:18px;width:36px;height:36px;border-radius:8px">${s.score}</span>`],
+    ["RSI (3P-Avg)", s.rsi_avg3],
+    ["MACD", s.macd.toFixed(4)],
+    ["Signal", s.signal.toFixed(4)],
+    ["Histogramm", s.histogram.toFixed(4)],
+    ["SMA90", s.sma90 ? s.sma90.toLocaleString("de-DE",{maximumFractionDigits:2}) : "—"],
+  ].map(([l,v]) => `<div class="detail-cell"><label>${l}</label><span>${v}</span></div>`).join("");
+
+  document.getElementById("m-signals").innerHTML = Object.entries(s.signals).map(([k,v]) => {
+    const lbl = SIG_LABELS[k];
+    return `<div class="sig-detail">
+      <div class="sig-dot ${v ? 'on' : 'off'}"></div>
+      <span class="sig-name">${v ? lbl.on : lbl.off}</span>
+      <span class="sig-val">${v ? "+1" : "0"}</span>
+    </div>`;
+  }).join("");
+
+  const canvas = document.getElementById("m-chart");
+  if (modalChart) { modalChart.destroy(); modalChart = null; }
+
+  document.getElementById("modal-bg").classList.add("open");
+  requestAnimationFrame(() => drawModalChart(canvas, s.history));
+}
+
+function drawModalChart(canvas, history) {
+  if (!history || history.length < 2) return;
+  const script = document.createElement("script");
+  script.src = "https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js";
+  script.onload = () => {
+    const colors = ["#E24B4A","#cc5500","#BA7517","#3B6D11","#085041"];
+    const n = history.length;
+    modalChart = new Chart(canvas, {
+      type: "bar",
+      data: {
+        labels: history.map((_, i) => i - n + 1),
+        datasets: [{
+          data: history,
+          backgroundColor: history.map(v => colors[v] + "cc"),
+          borderRadius: 3,
+          borderSkipped: false,
+        }]
+      },
+      options: {
+        animation: false,
+        responsive: true,
+        plugins: { legend: { display: false }, tooltip: {
+          callbacks: { label: ctx => `Score: ${ctx.raw}` }
+        }},
+        scales: {
+          y: { min: 0, max: 4, ticks: { stepSize: 1, font: { size: 11 } },
+               grid: { color: "rgba(128,128,128,0.1)" } },
+          x: { ticks: { maxTicksLimit: 6, font: { size: 10 } },
+               grid: { display: false } }
+        }
+      }
+    });
+  };
+  if (window.Chart) { script.onload(); }
+  else { document.head.appendChild(script); }
+}
+
+function closeModal(e) {
+  if (e && e.target !== document.getElementById("modal-bg")) return;
+  document.getElementById("modal-bg").classList.remove("open");
+  if (modalChart) { modalChart.destroy(); modalChart = null; }
+}
+
+// ---------------------------------------------------------------------------
+// Filter-Buttons
+// ---------------------------------------------------------------------------
+
+document.querySelectorAll(".filter-btn").forEach(btn => {
+  btn.addEventListener("click", function() {
+    document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+    this.classList.add("active");
+    filterMin = parseInt(this.dataset.min);
+    filterMax = parseInt(this.dataset.max);
+    render();
+  });
+});
+
+// ---------------------------------------------------------------------------
+// Start
+// ---------------------------------------------------------------------------
+
+loadData();
+
+if ("serviceWorker" in navigator) {
+  navigator.serviceWorker.register("sw.js").catch(() => {});
+}
+</script>
+</body>
+</html>

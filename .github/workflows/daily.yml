@@ -1,0 +1,39 @@
+name: Tägliche Aktienanalyse
+
+on:
+  schedule:
+    # Mo–Fr um 17:30 UTC = 18:30 MEZ / 19:30 MESZ (nach Börsenschluss)
+    - cron: "30 17 * * 1-5"
+  workflow_dispatch:
+    # Manueller Start über GitHub UI jederzeit möglich
+
+jobs:
+  analyze:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write   # zum Zurückschreiben von data.json
+
+    steps:
+      - name: Repository auschecken
+        uses: actions/checkout@v4
+
+      - name: Python 3.11 einrichten
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+          cache: "pip"
+
+      - name: Abhängigkeiten installieren
+        run: pip install -r requirements.txt
+
+      - name: Analyse ausführen
+        run: python analyze.py
+
+      - name: Ergebnisse committen und pushen
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data.json
+          # Nur committen wenn sich etwas geändert hat
+          git diff --staged --quiet || git commit -m "Update: $(date -u +'%Y-%m-%d %H:%M UTC')"
+          git push

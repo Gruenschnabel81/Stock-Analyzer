@@ -1,0 +1,6 @@
+{
+  "outputDirectory": "public",
+  "github": {
+    "silent": true
+  }
+}
