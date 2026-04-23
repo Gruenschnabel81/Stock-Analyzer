@@ -1,5 +1,5 @@
 {
-  "updated": "2026-04-23T10:43:03Z",
+  "updated": "2026-04-23T10:52:36Z",
   "count": 21,
   "stocks": [
     {
@@ -80,7 +80,8 @@
         2,
         2,
         2
-      ]
+      ],
+      "name": "Salesforce"
     },
     {
       "ticker": "ABT",
@@ -160,7 +161,8 @@
         2,
         2,
         2
-      ]
+      ],
+      "name": "Abbott"
     },
     {
       "ticker": "ISRG",
@@ -240,7 +242,8 @@
         2,
         1,
         2
-      ]
+      ],
+      "name": "Intuitive Surgical"
     },
     {
       "ticker": "MCD",
@@ -320,7 +323,8 @@
         1,
         1,
         2
-      ]
+      ],
+      "name": "McDonald's"
     },
     {
       "ticker": "MDT",
@@ -400,7 +404,8 @@
         2,
         2,
         2
-      ]
+      ],
+      "name": "Medtronic"
     },
     {
       "ticker": "BRK-B",
@@ -480,7 +485,8 @@
         1,
         2,
         2
-      ]
+      ],
+      "name": "Berkshire Hathaway"
     },
     {
       "ticker": "TSLA",
@@ -560,7 +566,8 @@
         2,
         1,
         1
-      ]
+      ],
+      "name": "Tesla"
     },
     {
       "ticker": "AAPL",
@@ -640,7 +647,8 @@
         1,
         0,
         1
-      ]
+      ],
+      "name": "Apple"
     },
     {
       "ticker": "MSFT",
@@ -720,7 +728,8 @@
         1,
         1,
         1
-      ]
+      ],
+      "name": "Microsoft"
     },
     {
       "ticker": "DIS",
@@ -800,7 +809,8 @@
         1,
         1,
         1
-      ]
+      ],
+      "name": "Disney"
     },
     {
       "ticker": "QBTS",
@@ -880,18 +890,19 @@
         1,
         1,
         1
-      ]
+      ],
+      "name": "D-Wave Quantum"
     },
     {
       "ticker": "VOW.DE",
-      "price": 90.0,
-      "change_pct": -1.153,
+      "price": 90.25,
+      "change_pct": -0.879,
       "score": 1,
-      "rsi": 44.8,
-      "rsi_avg3": 47.3,
-      "macd": -0.3134,
-      "signal": -0.5907,
-      "histogram": 0.2773,
+      "rsi": 45.4,
+      "rsi_avg3": 47.5,
+      "macd": -0.2935,
+      "signal": -0.5867,
+      "histogram": 0.2932,
       "sma90": 98.53,
       "signals": {
         "rsi_oversold": 0,
@@ -960,7 +971,8 @@
         1,
         1,
         1
-      ]
+      ],
+      "name": "Volkswagen"
     },
     {
       "ticker": "XLF",
@@ -1040,7 +1052,8 @@
         0,
         0,
         1
-      ]
+      ],
+      "name": "S&P 500 Financials"
     },
     {
       "ticker": "GOOGL",
@@ -1120,7 +1133,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "name": "Alphabet"
     },
     {
       "ticker": "META",
@@ -1200,7 +1214,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "name": "Meta"
     },
     {
       "ticker": "NFLX",
@@ -1280,7 +1295,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "name": "Netflix"
     },
     {
       "ticker": "NVDA",
@@ -1360,7 +1376,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "name": "Nvidia"
     },
     {
       "ticker": "PYPL",
@@ -1440,7 +1457,8 @@
         1,
         0,
         0
-      ]
+      ],
+      "name": "PayPal"
     },
     {
       "ticker": "KO",
@@ -1520,18 +1538,19 @@
         0,
         0,
         0
-      ]
+      ],
+      "name": "Coca-Cola"
     },
     {
       "ticker": "IWDA.AS",
-      "price": 116.49,
-      "change_pct": -0.09,
+      "price": 116.55,
+      "change_pct": -0.039,
       "score": 0,
-      "rsi": 68.1,
-      "rsi_avg3": 68.1,
-      "macd": 1.4208,
-      "signal": 0.8622,
-      "histogram": 0.5587,
+      "rsi": 68.6,
+      "rsi_avg3": 68.2,
+      "macd": 1.4256,
+      "signal": 0.8631,
+      "histogram": 0.5625,
       "sma90": 112.38,
       "signals": {
         "rsi_oversold": 0,
@@ -1600,18 +1619,19 @@
         0,
         0,
         0
-      ]
+      ],
+      "name": "MSCI World"
     },
     {
       "ticker": "XAIX.DE",
-      "price": 167.14,
-      "change_pct": -0.536,
+      "price": 167.2,
+      "change_pct": -0.5,
       "score": 0,
-      "rsi": 70.6,
-      "rsi_avg3": 71.4,
-      "macd": 4.1735,
-      "signal": 2.4095,
-      "histogram": 1.764,
+      "rsi": 70.7,
+      "rsi_avg3": 71.5,
+      "macd": 4.1783,
+      "signal": 2.4105,
+      "histogram": 1.7679,
       "sma90": 153.86,
       "signals": {
         "rsi_oversold": 0,
@@ -1680,7 +1700,8 @@
         1,
         1,
         0
-      ]
+      ],
+      "name": "XTracker AI"
     }
   ]
 }
