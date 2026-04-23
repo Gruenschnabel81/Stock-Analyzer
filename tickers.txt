@@ -18,6 +18,7 @@ NVDA|Nvidia
 CRM|Salesforce
 SQ|Block (Square)
 PYPL|PayPal
+SMCI|Super Micro Computer
 
 # US Sonstige
 ABT|Abbott
