@@ -96,11 +96,12 @@
   .stat span  { font-size: 13px; font-weight: 500; }
 
   /* Detail modal */
-  #modal-bg { display: none; min-height: 100vh; background: rgba(0,0,0,0.4);
-              padding: 16px; }
-  #modal-bg.open { display: flex; align-items: center; justify-content: center; }
+  #modal-bg { display: none; position: fixed; inset: 0;
+              background: rgba(0,0,0,0.5); z-index: 100;
+              padding: 16px; align-items: center; justify-content: center; }
+  #modal-bg.open { display: flex; }
   #modal { background: var(--card); border-radius: 20px;
-           width: 100%; max-width: 520px; margin: 0 auto;
+           width: 100%; max-width: 520px;
            padding: 20px; max-height: 90vh; overflow-y: auto; }
   #modal h2 { font-size: 20px; margin-bottom: 4px; }
   #modal-close { float: right; font-size: 22px; cursor: pointer;
