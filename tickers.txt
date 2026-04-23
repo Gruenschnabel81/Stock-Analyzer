@@ -19,6 +19,7 @@ CRM|Salesforce
 SQ|Block (Square)
 PYPL|PayPal
 SMCI|Super Micro Computer
+IBM|IBM
 
 # US Sonstige
 ABT|Abbott
@@ -28,6 +29,22 @@ DIS|Disney
 MDT|Medtronic
 KO|Coca-Cola
 BRK-B|Berkshire Hathaway
+MMM|3M
+AXP|American Express
+CVX|Chevron
+GS|Goldman Sachs
+JNJ|JNJ
+JPM|JP Morgan
+MRK|Merck
+PG|Procter Gamble
+UNH|United Healthcare
+VZ|Verizon
+V|Visa
+WMT|Walmart
+
+# DAX
+ENR|Siemens Energy
+SAP|SAP
 
 # Quantum / AI
 QBTS|D-Wave Quantum
