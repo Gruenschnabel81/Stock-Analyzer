@@ -68,6 +68,7 @@
 
   .card-top { display: flex; align-items: flex-start; justify-content: space-between; }
   .ticker   { font-size: 16px; font-weight: 700; letter-spacing: .5px; }
+  .ticker-name { font-size: 11px; color: var(--muted); margin-top: 1px; margin-bottom: 1px; }
   .price-row { font-size: 13px; color: var(--muted); margin-top: 2px; }
   .chg.pos  { color: #3B6D11; } .chg.neg { color: #A32D2D; }
 
@@ -240,6 +241,7 @@ function cardHTML(s) {
     <div class="card-top">
       <div>
         <div class="ticker">${s.ticker}</div>
+        <div class="ticker-name">${s.name && s.name !== s.ticker ? s.name : ''}</div>
         <div class="price-row">
           ${s.price.toLocaleString("de-DE", {minimumFractionDigits:2,maximumFractionDigits:2})}
           <span class="chg ${chgClass}">${chgSign}${s.change_pct.toFixed(2)}%</span>
@@ -281,6 +283,9 @@ let modalChart = null;
 
 function openModal(s) {
   document.getElementById("m-ticker").textContent = s.ticker;
+  if (s.name && s.name !== s.ticker) {
+    document.getElementById("m-ticker").textContent = `${s.ticker} — ${s.name}`;
+  }
   const chgClass = s.change_pct >= 0 ? "color:#3B6D11" : "color:#A32D2D";
   const chgSign  = s.change_pct >= 0 ? "+" : "";
   document.getElementById("m-price").innerHTML =

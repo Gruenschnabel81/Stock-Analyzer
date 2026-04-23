@@ -1,39 +1,40 @@
 # -------------------------------------------------------
-# Ticker-Liste  —  eine Zeile pro Symbol
-# US-Aktien:    AAPL, MSFT, NVDA …
-# DE-Aktien:    VOW.DE, SAP.DE …
-# ETFs:         IWDA.AS, SPY …
+# Ticker-Liste  —  Format:  SYMBOL|Name
+# Name ist optional. Ohne | wird das Symbol als Name verwendet.
+# US-Aktien:    AAPL|Apple
+# DE-Aktien:    VOW.DE|Volkswagen
+# ETFs:         IWDA.AS|MSCI World
 # Kommentare mit # werden ignoriert.
 # -------------------------------------------------------
 
 # US Tech
-GOOGL
-TSLA
-AAPL
-META
-MSFT
-NFLX
-NVDA
-CRM
-SQ
-PYPL
+GOOGL|Alphabet
+TSLA|Tesla
+AAPL|Apple
+META|Meta
+MSFT|Microsoft
+NFLX|Netflix
+NVDA|Nvidia
+CRM|Salesforce
+SQ|Block (Square)
+PYPL|PayPal
 
 # US Sonstige
-ABT
-ISRG
-MCD
-DIS
-MDT
-KO
-BRK-B
+ABT|Abbott
+ISRG|Intuitive Surgical
+MCD|McDonald's
+DIS|Disney
+MDT|Medtronic
+KO|Coca-Cola
+BRK-B|Berkshire Hathaway
 
 # Quantum / AI
-QBTS
+QBTS|D-Wave Quantum
 
 # Europa
-VOW.DE
+VOW.DE|Volkswagen
 
 # ETFs / Indizes
-IWDA.AS
-XLF
-XAIX.DE
+IWDA.AS|MSCI World
+XLF|S&P 500 Financials
+XAIX.DE|XTracker AI

@@ -156,22 +156,29 @@ def analyze_ticker(ticker):
 # ---------------------------------------------------------------------------
 
 def load_tickers():
+    tickers = []
     with open(TICKERS_FILE, encoding="utf-8") as f:
-        return [
-            line.strip()
-            for line in f
-            if line.strip() and not line.startswith("#")
-        ]
+        for line in f:
+            line = line.strip()
+            if not line or line.startswith("#"):
+                continue
+            if "|" in line:
+                symbol, name = line.split("|", 1)
+                tickers.append((symbol.strip(), name.strip()))
+            else:
+                tickers.append((line, line))
+    return tickers
 
 def main():
     tickers = load_tickers()
     print(f"Analysiere {len(tickers)} Titel...\n")
 
     results = []
-    for t in tickers:
-        print(f"  {t:20s}", end=" ", flush=True)
-        data = analyze_ticker(t)
+    for symbol, name in tickers:
+        print(f"  {symbol:20s}", end=" ", flush=True)
+        data = analyze_ticker(symbol)
         if data:
+            data["name"] = name
             results.append(data)
             bar  = "█" * data["score"] + "░" * (4 - data["score"])
             print(f"[{bar}] {data['score']}/4  RSI={data['rsi']}  {data['price']}")
