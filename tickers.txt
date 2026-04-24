@@ -7,52 +7,146 @@
 # Kommentare mit # werden ignoriert.
 # -------------------------------------------------------
 
-# US Tech
-GOOGL|Alphabet
-TSLA|Tesla
-AAPL|Apple
-META|Meta
-MSFT|Microsoft
-NFLX|Netflix
-NVDA|Nvidia
-CRM|Salesforce
-SQ|Block (Square)
-PYPL|PayPal
-SMCI|Super Micro Computer
-IBM|IBM
-
-# US Sonstige
-ABT|Abbott
-ISRG|Intuitive Surgical
-MCD|McDonald's
-DIS|Disney
-MDT|Medtronic
-KO|Coca-Cola
-BRK-B|Berkshire Hathaway
+# Dow Jones (30 Titel)
 MMM|3M
 AXP|American Express
+AMGN|Amgen
+AAPL|Apple
+BA|Boeing
+CAT|Caterpillar
 CVX|Chevron
+CSCO|Cisco
+KO|Coca-Cola
+DIS|Disney
+DOW|Dow Inc
 GS|Goldman Sachs
-JNJ|JNJ
+HD|Home Depot
+HON|Honeywell
+IBM|IBM
+INTC|Intel
+JNJ|Johnson & Johnson
 JPM|JP Morgan
+MCD|McDonald's
 MRK|Merck
-PG|Procter Gamble
-UNH|United Healthcare
+MSFT|Microsoft
+NKE|Nike
+PG|Procter & Gamble
+CRM|Salesforce
+TRV|Travelers
+UNH|UnitedHealth
 VZ|Verizon
 V|Visa
 WMT|Walmart
+WBA|Walgreens
+
+# Größte Tech
+NVDA|Nvidia
+META|Meta
+GOOGL|Alphabet
+AMZN|Amazon
+TSLA|Tesla
+NFLX|Netflix
+AMD|AMD
+ORCL|Oracle
+QCOM|Qualcomm
+ADBE|Adobe
+PYPL|PayPal
+SNOW|Snowflake
+UBER|Uber
+SHOP|Shopify
+PLTR|Palantir
+SMCI|Super Micro Computer
+MSTR|MicroStrategy
+RKLB|Rocket Lab
+IONQ|IonQ
+
+# Größte MedTech & Pharma
+ISRG|Intuitive Surgical
+MDT|Medtronic
+ABT|Abbott
+SYK|Stryker
+BSX|Boston Scientific
+ZBH|Zimmer Biomet
+EW|Edwards Lifesciences
+BAX|Baxter International
+HOLX|Hologic
+DXCM|DexCom
+IDXX|IDEXX Laboratories
+VEEV|Veeva Systems
+ILMN|Illumina
+BDX|Becton Dickinson
+PFE|Pfizer
+LLY|Eli Lilly
+ABBV|AbbVie
+GILD|Gilead
+BMY|Bristol-Myers Squibb
+REGN|Regeneron
+
+# Finanzen & Versicherung
+BRK-B|Berkshire Hathaway
+BAC|Bank of America
+WFC|Wells Fargo
+MS|Morgan Stanley
+BLK|BlackRock
+SCHW|Charles Schwab
+AIG|AIG
+CB|Chubb
+PGR|Progressive
+MET|MetLife
+
+# Energie & Rohstoffe
+XOM|ExxonMobil
+CVX|Chevron
+COP|ConocoPhillips
+SLB|Schlumberger
+NEE|NextEra Energy
+FCX|Freeport-McMoRan
+NEM|Newmont
+
+# Konsumgüter & Retail
+AMZN|Amazon
+COST|Costco
+TGT|Target
+SBUX|Starbucks
+MO|Altria
+PM|Philip Morris
+CL|Colgate-Palmolive
+KMB|Kimberly-Clark
+
+# Europa (XETRA)
+SAP.DE|SAP
+SIE.DE|Siemens
+ALV.DE|Allianz
+MUV2.DE|Munich Re
+BMW.DE|BMW
+MBG.DE|Mercedes-Benz
+BAS.DE|BASF
+VOW.DE|Volkswagen
+BAYN.DE|Bayer
+DTE.DE|Deutsche Telekom
+DBK.DE|Deutsche Bank
+ADS.DE|Adidas
+AIR.PA|Airbus
+ASML.AS|ASML
+NESN.SW|Nestlé
+NOVN.SW|Novartis
+ROG.SW|Roche
+MC.PA|LVMH
+
+# ETFs & Indizes
+SPY|S&P 500 ETF
+QQQ|Nasdaq 100 ETF
+IWDA.AS|MSCI World
+XLF|S&P 500 Financials
+XLK|S&P 500 Technology
+XAIX.DE|XTracker AI
+GLD|Gold ETF
+TLT|US Treasury Bonds
 
 # DAX
 ENR|Siemens Energy
-SAP|SAP
 
 # Quantum / AI
 QBTS|D-Wave Quantum
 
-# Europa
-VOW.DE|Volkswagen
 
-# ETFs / Indizes
-IWDA.AS|MSCI World
-XLF|S&P 500 Financials
-XAIX.DE|XTracker AI
