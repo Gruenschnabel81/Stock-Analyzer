@@ -76,12 +76,16 @@ def score_row(df, idx):
     # X — Kurs unterhalb SMA90 (möglicher Einstiegsbereich)
     X = 1 if (pd.notna(r0["sma90"]) and r0["close"] < r0["sma90"]) else 0
 
-    score   = T + V + W + X
+    # Z — Volumen über 20-Tage-Durchschnitt (Kaufinteresse bestätigt)
+    Z = 1 if (pd.notna(r0["vol_sma20"]) and r0["volume"] > r0["vol_sma20"]) else 0
+
+    score   = T + V + W + X + Z
     signals = {
         "rsi_oversold":        T,
         "macd_crossover":      V,
         "histogram_improving": W,
         "below_sma90":         X,
+        "volume_above_avg":    Z,
     }
     return score, signals
 
@@ -105,14 +109,15 @@ def analyze_ticker(ticker):
             print("zu wenig Daten")
             return None
 
-        df = raw[["Close"]].copy()
-        df.columns = ["close"]
+        df = raw[["Close", "Volume"]].copy()
+        df.columns = ["close", "volume"]
         df["rsi"]       = calc_rsi(df["close"])
         macd, sig, hist = calc_macd(df["close"])
         df["macd"]      = macd
         df["signal"]    = sig
         df["histogram"] = hist
         df["sma90"]     = calc_sma(df["close"], 90)
+        df["vol_sma20"] = calc_sma(df["volume"], 20)
 
         df = df.dropna(subset=["rsi", "macd", "signal"]).copy()
         if len(df) < 5:
@@ -136,7 +141,7 @@ def analyze_ticker(ticker):
             "ticker":     ticker,
             "price":      round(float(r0["close"]), 2),
             "change_pct": round(float(change_pct), 3),
-            "score":      score,
+            "score":      score,  # 0-5
             "rsi":        round(float(r0["rsi"]), 1),
             "rsi_avg3":   round(float((df["rsi"].iloc[-1] + df["rsi"].iloc[-2] + df["rsi"].iloc[-3]) / 3), 1),
             "macd":       round(float(r0["macd"]), 4),
