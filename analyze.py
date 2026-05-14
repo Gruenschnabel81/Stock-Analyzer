@@ -137,17 +137,31 @@ def analyze_ticker(ticker):
         history_raw = all_scores[-60:]
         history     = [s for s in history_raw if s is not None]
 
+# NaN-Sicherheitscheck — überspringe Ticker mit ungültigen Daten
+        if pd.isna(r0["close"]) or pd.isna(r0["rsi"]) or pd.isna(r0["macd"]):
+            print(f"NaN-Werte für {ticker} — übersprungen")
+            return None
+
+        def _s(val, digits=2):
+            try:
+                f = float(val)
+                if pd.isna(f):
+                    return None
+                return round(f, digits)
+            except (ValueError, TypeError):
+                return None
+
         return {
             "ticker":     ticker,
-            "price":      safe(r0["close"], 2),
-            "change_pct": safe(change_pct, 3),
+            "price":      _s(r0["close"], 2),
+            "change_pct": _s(change_pct, 3),
             "score":      score,
-            "rsi":        safe(r0["rsi"], 1),
-            "rsi_avg3":   safe((df["rsi"].iloc[-1] + df["rsi"].iloc[-2] + df["rsi"].iloc[-3]) / 3, 1),
-            "macd":       safe(r0["macd"], 4),
-            "signal":     safe(r0["signal"], 4),
-            "histogram":  safe(r0["histogram"], 4),
-            "sma90":      safe(r0["sma90"], 2),
+            "rsi":        _s(r0["rsi"], 1),
+            "rsi_avg3":   _s((df["rsi"].iloc[-1] + df["rsi"].iloc[-2] + df["rsi"].iloc[-3]) / 3, 1),
+            "macd":       _s(r0["macd"], 4),
+            "signal":     _s(r0["signal"], 4),
+            "histogram":  _s(r0["histogram"], 4),
+            "sma90":      _s(r0["sma90"], 2),
             "signals":    signals,
             "history":    history,
         }
