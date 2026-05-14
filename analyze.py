@@ -139,15 +139,15 @@ def analyze_ticker(ticker):
 
         return {
             "ticker":     ticker,
-            "price":      round(float(r0["close"]), 2),
-            "change_pct": round(float(change_pct), 3),
-            "score":      score,  # 0-5
-            "rsi":        round(float(r0["rsi"]), 1),
-            "rsi_avg3":   round(float((df["rsi"].iloc[-1] + df["rsi"].iloc[-2] + df["rsi"].iloc[-3]) / 3), 1),
-            "macd":       round(float(r0["macd"]), 4),
-            "signal":     round(float(r0["signal"]), 4),
-            "histogram":  round(float(r0["histogram"]), 4),
-            "sma90":      round(float(r0["sma90"]), 2) if pd.notna(r0["sma90"]) else None,
+            "price":      safe(r0["close"], 2),
+            "change_pct": safe(change_pct, 3),
+            "score":      score,
+            "rsi":        safe(r0["rsi"], 1),
+            "rsi_avg3":   safe((df["rsi"].iloc[-1] + df["rsi"].iloc[-2] + df["rsi"].iloc[-3]) / 3, 1),
+            "macd":       safe(r0["macd"], 4),
+            "signal":     safe(r0["signal"], 4),
+            "histogram":  safe(r0["histogram"], 4),
+            "sma90":      safe(r0["sma90"], 2),
             "signals":    signals,
             "history":    history,
         }
