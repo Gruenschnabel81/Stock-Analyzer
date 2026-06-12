@@ -40,6 +40,7 @@ WMT|Walmart
 WBA|Walgreens
 
 # Größte Tech
+SPCX|SpaceX
 NVDA|Nvidia
 META|Meta
 GOOGL|Alphabet
